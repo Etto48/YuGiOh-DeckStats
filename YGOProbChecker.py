@@ -2,8 +2,8 @@ import sys
 import os
 import argparse
 import tabulate
-from YGOProb import deck
-from YGOProb import fetcher
+from YuGiOhDeckStats import deck
+from YuGiOhDeckStats import fetcher
 
 programDir = os.path.dirname(__file__)
 
