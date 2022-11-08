@@ -1,0 +1,18 @@
+[Monster]
+join_type = "and"
+display_name = "At least a monster in hand"
+at_least_one_of_card_type = ["Monster"]
+[Spell]
+join_type = "and"
+display_name = "At least a spell in hand"
+at_least_one_of_card_type = ["Spell"]
+[Trap]
+join_type = "and"
+display_name = "At least a trap in hand"
+at_least_one_of_card_type = ["Trap"]
+[Handtrap]
+display_name = "At least a handtrap in hand"
+python_script = "Handtraps"
+[Only_Handrap]
+display_name = "Only handtraps in hand"
+python_script = "OnlyHandtraps"
