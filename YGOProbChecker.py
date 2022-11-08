@@ -22,7 +22,7 @@ if __name__ == "__main__":
         "The file (.txt/.ydk) containing the decklist to analyze with the default tests")
 
     main_task.add_argument("--info",dest="info",type=str,required=False,help=
-        "The exact name of the card you want to show information about")
+        "The exact name or card id of the card you want to show information about")
     
     parser.add_argument("--turns",dest="turns",type=int,required=False,default=2,help=
         "How many turns to simulate during the statistical tests (only needed if --dir is used)")
