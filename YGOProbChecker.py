@@ -11,24 +11,26 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=
         "Explore the stats of your Yu-Gi-Oh deck and perform highly customizable statistical tests")
     main_task = parser.add_mutually_exclusive_group(required=True)
-
     main_task.add_argument("--dir",dest="dir",type=str,required=False,help=
         "The directory where the deck data is stored. "
         "At least a decklist is needed inside it in the "
         "form of a .txt/.ydk file, you can also provide a .toml "
         "file with some statistical tests to run on the starting hand")
-
     main_task.add_argument("--file",dest="file",type=str,required=False,help=
         "The file (.txt/.ydk) containing the decklist to analyze with the default tests")
-
     main_task.add_argument("--info",dest="info",type=str,required=False,help=
         "The exact name or card id of the card you want to show information about")
-    
+    main_task.add_argument("--convert",dest="convert",type=str,required=False,help=
+        "The deck file you want to convert (.txt/.ydk), you will need to specify the output file "
+        "with the correct extention with --out or -o")
+
     parser.add_argument("--turns",dest="turns",type=int,required=False,default=2,help=
         "How many turns to simulate during the statistical tests (only needed if --dir is used)")
     parser.add_argument("--simulations",dest="simulations",type=int,required=False,default=100000,help=
         "How many instances are simulated during the statistical tests (more are better, and slower) "
         "(only needed if --dir is used)")
+    parser.add_argument("--out","-o",dest="output",type=str,required=False,help=
+        "Specify the output file")
 
     args = parser.parse_args()
 
@@ -85,5 +87,10 @@ if __name__ == "__main__":
                 tabData.append(["Link",cardInfo["linkval"]])
         tabData.append(["ID",cardInfo["id"]])
         print(tabulate.tabulate(tabData,tablefmt="rounded_grid",maxcolwidths=[None, 30]))
-         
+
+    elif args.convert is not None:
+        if args.output is None:
+            print("You need to specify the output file with --out or -o")
+        else:
+            deck.Deck.fromFile(args.convert).save(args.output)
 

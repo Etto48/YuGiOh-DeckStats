@@ -33,7 +33,7 @@ class Deck:
                 writeTo = "extra"
             elif sideDeckLine in l:
                 writeTo = "side"
-            elif l[0] == "-" or l.strip() == "\n":
+            elif l[0] == "-" or l[0] == "#" or l.strip() == "\n":
                 pass
             else:
                 if ext == ".ydk":
@@ -72,6 +72,41 @@ class Deck:
                     elif writeTo == "side":
                         ret.sideDeck[cardInfo["name"]] = int(n)
         return ret   
+
+    def save(self,filename:str):
+        ext = os.path.splitext(filename)[1]
+        with open(filename,"w") as f:
+            if ext == ".ydk":
+                f.write("#main \n")
+                for name, count in self.mainDeck.items():
+                    cardInfo = fetcher.requestCard(name)
+                    for i in range(count):
+                        f.write(f"{cardInfo['id']}\n")
+                f.write("#extra \n")
+                for name, count in self.extraDeck.items():
+                    cardInfo = fetcher.requestCard(name)
+                    for i in range(count):
+                        f.write(f"{cardInfo['id']}\n")
+                f.write("!side \n")
+                for name, count in self.sideDeck.items():
+                    cardInfo = fetcher.requestCard(name)
+                    for i in range(count):
+                        f.write(f"{cardInfo['id']}\n")
+            else:
+                f.write("Main Deck:\n")
+                for name, count in self.mainDeck.items():
+                    cardInfo = fetcher.requestCard(name)
+                    f.write(f"{count}x {cardInfo['name']}\n")
+                f.write("Extra Deck:\n")
+                for name, count in self.extraDeck.items():
+                    cardInfo = fetcher.requestCard(name)
+                    f.write(f"{count}x {cardInfo['name']}\n")
+                f.write("Side Deck:\n")
+                for name, count in self.sideDeck.items():
+                    cardInfo = fetcher.requestCard(name)
+                    f.write(f"{count}x {cardInfo['name']}\n")
+
+
 
     def mainCount(self):
         ret = 0
