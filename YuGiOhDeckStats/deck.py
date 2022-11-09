@@ -423,6 +423,37 @@ class Deck:
         print(tabulate.tabulate(tabData,headers=[f"{testCategory} Test"]+[f"Turn {i+1}" for i in range(turns)],tablefmt=TABLE_FMT))
         return retDict
 
+    def testHands(self,turns:int = 2,simulations:int = 100000):
+        outcomes:dict[str,list[int]] = {}
+        for card in self.mainDeck.keys():
+            outcomes[card] = [0 for i in range(turns)]
+        for turn in range(turns):
+            print(f"\r\033[KTesting opening hands... Turn {turn+1}",end="")
+            drawSize = 5+turn
+            for _ in range(simulations):
+                sampleDeck = []
+                for name, count in self.mainDeck.items():
+                    for _ in range(count):
+                        sampleDeck.append(name)
+                thisHand = set()
+                for _ in range(drawSize):
+                    drawOutput = random.choice(sampleDeck)
+                    sampleDeck.remove(drawOutput)
+                    thisHand.add(drawOutput)
+                for card in thisHand:
+                    outcomes[card][turn] += 1
+        tabData = []
+        for card, countList in outcomes.items():
+            tabData.append([card]+[f"{x*100/(simulations):.1f}%" for i,x in enumerate(countList)])
+        tabData.sort(key=lambda x:x[turns],reverse=True)
+        print("\r\033[K",end="")
+        print(tabulate.tabulate(tabData,headers=["Card Name"]+[f"Turn {t+1}" for t in range(turns)],tablefmt=TABLE_FMT))
+        return outcomes
+            
+            
+
+
+            
 
             
                     

@@ -59,9 +59,11 @@ if __name__ == "__main__":
         loadedDeck.summary()
         defaultDecktests = programDir+"/Data/DefaultTests/DefaultTests.toml"
         defaultDeckscripts = programDir+"/Data/DefaultTests/DefaultScripts"
+        loadedDeck.testHands(args.turns,args.simulations)
         loadedDeck.testsFromFile(defaultDecktests,defaultDeckscripts,args.turns,args.simulations,"Default")
         if decktests is not None:
             loadedDeck.testsFromFile(decktests,deckscripts,args.turns,args.simulations,"Custom")
+        
 
     elif args.info is not None:
         cardId = int(args.info) if args.info.isdecimal() else args.info
